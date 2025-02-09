@@ -20,7 +20,10 @@ public class Entity : MonoBehaviour
     private Animator animator;
     private Vector2 _knockbackVel = new Vector2(0, 0);
     private SpriteRenderer spriteRenderer;
-    [SerializeField] AudioSource damageSound;
+    [SerializeField] public AudioSource damageSound;
+    [SerializeField] public AudioSource dieSound;
+
+    private bool _dieSoundPlayed = false;
 
     void Start()
     {
@@ -99,6 +102,12 @@ public class Entity : MonoBehaviour
                     spriteRenderer.color = Color.red;
                 }
             }
+        }
+
+        if (IsDead() && !_dieSoundPlayed && dieSound != null)
+        {
+            _dieSoundPlayed = true;
+            dieSound.Play();
         }
 
         if (animator == null) animator = GetComponent<Animator>();

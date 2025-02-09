@@ -34,6 +34,7 @@ public class DungeonGenerator : MonoBehaviour
         dungeonMap = new int[80, 80];
         roomTriggers = new RoomTrigger[5, 5];
         startRoom = new Tuple<int, int>(UnityEngine.Random.Range(0,5), UnityEngine.Random.Range(0,5));
+        Debug.Log(startRoom.Item1 + " " + startRoom.Item2);
         player.transform.position = new Vector3(startRoom.Item1*16 + 8, startRoom.Item2*16 + 8, -0.1f);
 
         void FillRoom(int x, int y, int size) {
@@ -55,7 +56,7 @@ public class DungeonGenerator : MonoBehaviour
             }
             if (i != startRoom.Item1 || j != startRoom.Item2) {
                 GameObject rt = Instantiate(roomTrigger, new Vector3(i*16 + offset + dungeonRooms[i,j]/2, j*16 + offset + dungeonRooms[i,j]/2, -0.1f), Quaternion.identity);
-                rt.transform.localScale = new Vector3(dungeonRooms[i,j] - 2, dungeonRooms[i,j] - 1, 2);
+                rt.transform.localScale = new Vector3(dungeonRooms[i,j] - 2, dungeonRooms[i,j] - 2, 2);
                 roomTriggers[i, j] = rt.GetComponent<RoomTrigger>();
             }
             
@@ -76,8 +77,7 @@ public class DungeonGenerator : MonoBehaviour
 
             // Check if final room
             if ((i == 0 || dungeonRooms[i-1, j] != 0) && (i == 4 || dungeonRooms[i+1, j] != 0) && (j == 0 || dungeonRooms[i, j-1] != 0) && (j == 4 || dungeonRooms[i, j+1] != 0)) {
-                finalRoom = new Tuple<int, int>(i, j);
-                roomTriggers[i, j].finalRoom = true;   
+                finalRoom = new Tuple<int, int>(i, j);   
                 return;
             }
 
